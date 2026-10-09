@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">VKProject</string>
+    <string name="app_name">Project</string>
+    <string name="main_title">Демонстрация Intent\'ов</string>
+    <string name="main_hint">Введите текст, номер телефона или сообщение и выберите действие.</string>
+    <string name="input_hint">Введите текст / номер телефона</string>
+    <string name="btn_open_second">Открыть вторую Activity</string>
+    <string name="btn_call_friend">Позвонить другу</string>
+    <string name="btn_share_text">Поделиться текстом</string>
+    <string name="second_title">Вторая Activity</string>
+    <string name="second_received_label">Полученный текст:</string>
+    <string name="second_no_text">Текст не был передан.</string>
+    <string name="btn_back">Назад</string>
+    <string name="share_chooser_title">Поделиться через…</string>
+    <string name="share_subject">Сообщение из Project</string>
+    <string name="error_empty_text">Введите текст</string>
+    <string name="error_invalid_phone">Введите корректный номер телефона (только цифры, +, -, пробелы, скобки; от 5 до 20 символов)</string>
+    <string name="error_no_dialer">На устройстве нет приложения для звонков</string>
 </resources>
