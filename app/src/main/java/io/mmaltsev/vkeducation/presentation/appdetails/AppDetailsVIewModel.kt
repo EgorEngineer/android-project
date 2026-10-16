@@ -1,11 +1,13 @@
 package io.mmaltsev.vkeducation.presentation.appdetails
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.mmaltsev.vkeducation.domain.appdetails.GetSimilarAppsUseCase
+import io.mmaltsev.vkeducation.data.applist.SampleAppListData
 import io.mmaltsev.vkeducation.domain.appdetails.GetAppDetailsUseCase
+import io.mmaltsev.vkeducation.domain.appdetails.GetSimilarAppsUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -21,7 +23,10 @@ import javax.inject.Inject
 class AppDetailsViewModel @Inject constructor(
     private val getAppDetailsUseCase: GetAppDetailsUseCase,
     private val getSimilarAppsUseCase: GetSimilarAppsUseCase,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    private val appId: String = savedStateHandle.get<String>(ARG_APP_ID) ?: DEFAULT_APP_ID
 
     private val _state = MutableStateFlow<AppDetailsState>(AppDetailsState.Loading)
     val state = _state.asStateFlow()
@@ -58,11 +63,12 @@ class AppDetailsViewModel @Inject constructor(
 
             try {
                 val similarApps = getSimilarAppsUseCase()
-                getAppDetailsUseCase("fa2e31b8-1234-4cf7-9914-108a170a1b01").collect { appDetails ->
+                getAppDetailsUseCase(appId).collect { appDetails ->
                     val currentState = _state.value
                     _state.value = AppDetailsState.Content(
                         appDetails = appDetails,
                         similarApps = similarApps,
+                        showcasePages = SampleAppListData.showcasePages,
                         descriptionCollapsed = (currentState as? AppDetailsState.Content)
                             ?.descriptionCollapsed ?: false,
                     )
@@ -74,5 +80,10 @@ class AppDetailsViewModel @Inject constructor(
                 Log.e("AppDetailsViewModel", "Failed to load app details", e)
             }
         }
+    }
+
+    companion object {
+        private const val ARG_APP_ID = "appId"
+        private const val DEFAULT_APP_ID = "fa2e31b8-1234-4cf7-9914-108a170a1b01"
     }
 }

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import io.mmaltsev.vkeducation.presentation.appdetails.AppDetailsScreen
+import io.mmaltsev.vkeducation.presentation.navigation.AppNavigation
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
 @AndroidEntryPoint
@@ -15,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             VkEducationTheme {
-                AppDetailsScreen()
+                AppNavigation()
             }
         }
     }
