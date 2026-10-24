@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import io.mmaltsev.vkeducation.domain.appdetails.Category
 import io.mmaltsev.vkeducation.domain.applist.AppListItem
 import io.mmaltsev.vkeducation.presentation.theme.VkEducationTheme
 
@@ -75,6 +76,8 @@ private fun Preview() {
                 name = "QuickNote",
                 developer = "NoteWorks",
                 iconUrl = "https://fastly.picsum.photos/id/237/200/200.jpg?hmac=zHUGikXUDyLCCmvyww1izLK3R3k8oRYBRiTizZEdyfI",
+                description = "Быстрые заметки с напоминаниями и синхронизацией между устройствами.",
+                category = Category.PRODUCTIVITY,
             ),
             onClick = {},
         )
