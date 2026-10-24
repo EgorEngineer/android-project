@@ -10,6 +10,8 @@ import dagger.hilt.components.SingletonComponent
 import io.mmaltsev.vkeducation.data.appdetails.SimilarAppMapper
 import io.mmaltsev.vkeducation.data.appdetails.SimilarAppsApi
 import io.mmaltsev.vkeducation.data.appdetails.SimilarAppsRepositoryImpl
+import io.mmaltsev.vkeducation.data.applist.AppListRepositoryImpl
+import io.mmaltsev.vkeducation.domain.applist.AppListRepository
 import io.mmaltsev.vkeducation.domain.appdetails.GetSimilarAppsUseCase
 import io.mmaltsev.vkeducation.domain.appdetails.SimilarAppsRepository
 import io.mmaltsev.vkeducation.data.appdetails.AppApi
@@ -28,62 +30,48 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://185.103.109.134")
-            .addConverterFactory(Json{
-                ignoreUnknownKeys = true
-            }.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(
+                Json { ignoreUnknownKeys = true }
+                    .asConverterFactory("application/json".toMediaType())
+            )
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideAppApi(retrofit: Retrofit): AppApi {
-        return retrofit.create(AppApi::class.java)
-    }
-
-//    @Provides
-//    @Singleton
-//    fun provideAppDetailsRepository(appApi: AppApi): AppDetailsRepository {
-//        return AppDetailsRepositoryImpl(appApi)
-//    }
+    fun provideAppApi(retrofit: Retrofit): AppApi = retrofit.create(AppApi::class.java)
 
     @Provides
     @Singleton
-    fun provideGetAppDetailsUseCase(repository: AppDetailsRepository): GetAppDetailsUseCase {
-        return GetAppDetailsUseCase(repository)
-    }
+    fun provideGetAppDetailsUseCase(repository: AppDetailsRepository): GetAppDetailsUseCase =
+        GetAppDetailsUseCase(repository)
 
     @Provides
     @Singleton
-    fun provideDatabase(app: Application): AppDatabase {
-        return Room.databaseBuilder(
+    fun provideDatabase(app: Application): AppDatabase =
+        Room.databaseBuilder(
             app,
             AppDatabase::class.java,
-            AppDatabase.DATABASE_NAME
+            AppDatabase.DATABASE_NAME,
         ).build()
-    }
 
     @Provides
     @Singleton
-    fun provideAppDetailsDao(database: AppDatabase): AppDetailsDao {
-        return database.appDetailsDao()
-    }
+    fun provideAppDetailsDao(database: AppDatabase): AppDetailsDao = database.appDetailsDao()
 
     @Provides
     @Singleton
-    fun provideAppDetailsEntityMapper(): AppDetailsEntityMapper {
-        return AppDetailsEntityMapper()
-    }
+    fun provideAppDetailsEntityMapper(): AppDetailsEntityMapper = AppDetailsEntityMapper()
 
     @Provides
     @Singleton
-    fun provideAppDetailsMapper(): AppDetailsMapper {
-        return AppDetailsMapper()
-    }
+    fun provideAppDetailsMapper(): AppDetailsMapper = AppDetailsMapper()
 
     @Provides
     @Singleton
@@ -91,10 +79,8 @@ object AppModule {
         api: AppApi,
         dao: AppDetailsDao,
         mapper: AppDetailsMapper,
-        entityMapper: AppDetailsEntityMapper
-    ): AppDetailsRepository {
-        return AppDetailsRepositoryImpl(api, dao, mapper, entityMapper)
-    }
+        entityMapper: AppDetailsEntityMapper,
+    ): AppDetailsRepository = AppDetailsRepositoryImpl(api, dao, mapper, entityMapper)
 
     @Provides
     @Singleton
@@ -115,4 +101,8 @@ object AppModule {
     @Singleton
     fun provideGetSimilarAppsUseCase(repository: SimilarAppsRepository): GetSimilarAppsUseCase =
         GetSimilarAppsUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideAppListRepository(impl: AppListRepositoryImpl): AppListRepository = impl
 }
